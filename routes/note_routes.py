@@ -11,9 +11,17 @@ note_bp = Blueprint('note_bp', __name__)
 
 @note_bp.route('/notes', methods=['POST'])
 def add_note():
+
+    #check title already exists
     data = request.get_json()
-    create_note(data['title'], data['content'])
+    title = data['title']
+    content = data['content']
+    note = create_note(title, content)
+    if note:
+        return jsonify({'message': note})
     return jsonify({'message': 'Note created'})
+
+
 
 @note_bp.route('/notes', methods=['GET'])
 def get_notes():
